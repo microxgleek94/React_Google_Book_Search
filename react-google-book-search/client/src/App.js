@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from './components/NavBar';
 import Banner from "./components/Banner";
 import SearchBooksPage from './pages/SearchBooksPage';
-import SavedBooksPage from './';
+import SavedBooksPage from './pages/SavedBooksPage';
 import './App.css';
 
 
@@ -18,7 +18,7 @@ function App() {
 //           <SearchBooksPage />
 //         </Route>
 //         <Route exact path={"/saved"}>
-//           <SavedPage />
+//           <SavedBooksPage />
 //         </Route>
 //       </Switch>
 //     </Router>
