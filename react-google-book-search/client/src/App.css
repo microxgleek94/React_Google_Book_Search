@@ -1,0 +1,17 @@
+body {
+  text-align: center;
+  background-image: linear-gradient(to right, #99ccff, #00ffcc);
+  font-family: 'Chilanka', cursive;
+  font-size: 25px;
+}
+
+  
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
