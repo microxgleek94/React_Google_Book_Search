@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API from "../../utils/API";
 import SavedBook from '../../components/SavedBook';
+import SavedBooksHeader from "../../components/Header/SavedPageHeader"
 
 function SavedBooksPage(book) {
     const [bookSave, setBooks] = useState([])
@@ -31,8 +32,9 @@ function SavedBooksPage(book) {
             <section className="row border border-secondary p-3">
                 <div className="col">
                     <div className="card">
+                        <div></div>
                         <div className="card-header">
-                            Saved
+                            <SavedBooksHeader />
                         </div>
                         <div  className="card-body">
                             {bookSave.length !== 0 ? (<ul>{bookSave.map(book => (

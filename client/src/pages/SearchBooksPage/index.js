@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import API from "../../utils/API.js";
-import AddBtn from "../../components/AddBtn"
+import AddBtn from "../../components/AddBtn";
+import Header from "../../components/Header";
 
 function SearchBooksPage({ book }) {
     var [state, setstate] = useState({
@@ -35,7 +36,7 @@ function SearchBooksPage({ book }) {
 
     return (
         <div>
-
+            <Header />
             <input onChange={handleTyping} />
             <button onClick={handleClick}>Search</button>
             {state.results.map(function (book, id) {
