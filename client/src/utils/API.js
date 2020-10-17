@@ -1,30 +1,25 @@
-import axios from "axios";
-import APIKEY from "../config/keys";
-const URL = "https://www.googleapis.com/books/v1/volumes?q=";
+import axios from "axios"
 
-// Export an object containing methods use for accessing googlebooks API
 export default {
-  // Search for books
-  searchBooks: (query) => {
-    //console.log(query);
-    return axios.get(URL + query + APIKEY);
+
+  search: function (searchTerm, cb) {
+    axios.get("https://www.googleapis.com/books/v1/volumes?q=" + searchTerm).then(function (data) {
+      console.log(data, "data")
+      cb(data)
+    })
   },
-   // Saves a book to the database
-  saveBook: function(bookData) {
-    console.log(`this book was saved: ${bookData}`);
-    return axios.post("/api/books", bookData);
-  },
-  // Gets all saved books
-  getBooks: function() {
+
+  getBooks: function () {
     return axios.get("/api/books");
   },
-  // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/books/" + id);
-  },
-  // Deletes the book with the given id
-  deleteBook: function(id) {
-    console.log(`this book was deleted: ${id}`)
+
+  deleteBook: function (id) {
     return axios.delete("/api/books/" + id);
-  } 
+  },
+
+  saveBook: function (bookData) {
+    console.log("this book saved successfully:" +  JSON.parse(JSON.stringify(bookData)));
+    return axios.post("/api/books", bookData);
+  }
+
 };

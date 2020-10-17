@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import BookList from '../../components/BookList'
+import React, { useEffect, useState } from 'react';
+import API from "../../utils/API";
+import SavedBook from '../../components/SavedBook';
 
-function SavedBooksPage(){
-    const [savedBooks, setSavedBooks] = useState([]);
-
-    const deleteBook = (event) => {
-        let id = event.target.getAttribute('id');
-        axios.delete('/api/books/'+id)
-        .then((response) => {
-            setSavedBooks(savedBooks.filter((book) => book._id !== id));
-        })
-    };
+function SavedBooksPage(book) {
+    const [bookSave, setBooks] = useState([])
 
     useEffect(() => {
-        fetch("/api/books")
-        .then((result) => result.json())
-        .then((result) => {
-            setSavedBooks(result);
-        });
-    }, []); 
+        loadBooks()
+    }, [])
+
+    function deleteBook(id) {
+        API.deleteBook(id)
+            .then(res => loadBooks())
+            .catch(err => console.log(err));
+    }
+
+    function loadBooks() {
+        API.getBooks()
+            .then(res =>
+                setBooks(res.data)
+            )
+            .catch(err => console.log(err));
+    };
+
+
+    console.log("this is booksave", bookSave)
 
     return (
         <div className="container">
@@ -30,12 +35,20 @@ function SavedBooksPage(){
                             Saved
                         </div>
                         <div className="card-body">
-                            {savedBooks.map((book, index) => <BookList key={index} index={index} buttonText="Remove" buttonClicked={deleteBook} book={book}/>)}
+                            {bookSave.length !== 0 ? (<ul>{bookSave.map(book => (
+                                <SavedBook
+                                    book={book}
+                                    deleteBook={deleteBook}
+                                ></SavedBook>
+                            ))}
+                            </ul>) : (<h1>No saved books!</h1>
+                                )}
                         </div>
                     </div>
                 </div>
             </section>
         </div>
+
     );
 }
 

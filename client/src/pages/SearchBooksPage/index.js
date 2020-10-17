@@ -1,62 +1,76 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-import BookList from '../../components/BookList'
+import API from "../../utils/API.js";
+import AddBtn from "../../components/AddBtn"
 
+function SearchBooksPage({ book }) {
+    var [state, setstate] = useState({
+        search: "",
+        results: []
+    });
 
-function SearchBooksPage() {
-    const [searchResults, setSearchResults] = useState([]);
-
-    const addBook = (event) => {
-        let bookIndex = parseInt(event.target.getAttribute('index'));
-        axios.post('/api/books', searchResults[bookIndex]);
+    var handleTyping = (e) => {
+        setstate({
+            ...state, search: e.target.value
+        })
     }
 
-    const search = (event) => {
-        event.preventDefault();
-        let searchString = event.target.searchinput.value;
-        fetch('https://www.googleapis.com/books/v1/volumes?q=' + searchString)
-            .then((resp) => resp.json())
-            .then((result) => {
-                console.log(result.items)
-                setSearchResults(result.items.map((book) => {
-                    return {
-                        _id: book.id,
-                        title: book.volumeInfo.title,
-                        image: book.volumeInfo.imageLinks.thumbnail,
-                        authors: book.volumeInfo.authors,
-                        link: book.volumeInfo.previewLink,
-                        description: book.volumeInfo.description,
-                    }
-                }));
-            });
-    };
+    var handleClick = () => {
+        API.search(state.search, function (data) {
+            setstate({
+                ...state, results: data.data.items
+            })
+        })
+    }
+    const makeBook = (book) => {
+        console.log("This is the user's search input:" + JSON.parse(JSON.stringify(book)))
+        API.saveBook({
+            author: book.volumeInfo.author,
+            description: book.volumeInfo.description,
+            image: book.volumeInfo.imageLinks.thumbnail,
+            link: book.volumeInfo.previewLink,
+            title: book.volumeInfo.title
+        })
+         .catch(err => console.log(err));
+    }
 
     return (
-        <div className="container">
-            <section className="row border border-secondary p-3 mb-5">
-                <div className="col">
-                    <form onSubmit={search}>
-                        <div className="form-group">
-                            <label>Search</label>
-                            <input type="text" className="form-control" name="searchinput" placeholder="Search by Book Name" />
-                        </div>
-                        <button type="submit" className="btn btn-primary">Search</button>
-                    </form>
-                </div>
-            </section>
-            <section className="row border border-secondary p-3">
-                <div className="col">
-                    <div className="card">
-                        <div className="card-header">
-                            Results
-                        </div>
-                        <div className="card-body">
-                            {searchResults.map((result, index) => <BookList key={index} index={index} buttonText="Add" buttonClicked={addBook} book={result} />)}
+        <div>
+
+            <input onChange={handleTyping} />
+            <button onClick={handleClick}>Search</button>
+            {state.results.map(function (book, id) {
+                return (
+
+                    <div key={id}>
+                        <div className="card mb-3">
+                            <div className="card-header text-right">
+                                <AddBtn buttonClicked={() => makeBook(book)} className="card-body" id={book.id}></AddBtn>
+                            </div>
+                            <div className="row no-gutters">
+                                <div className="col">
+                                    <img src={book.volumeInfo.imageLinks.thumbnail} className="img-thumbnail"
+                                        style={{ width: 'auto', height: '300px' }} alt="Book" />
+                                </div>
+                                <div className="col">
+                                    <div className="card-body">
+                                        <h4 className="card-title"><a href={book.volumeInfo.infoLink}>
+                                            {book.volumeInfo.title}</a></h4>
+                                        <h5 className="card-title">{`Written by: ${book.volumeInfo.authors.join(", ")}`}</h5>
+                                        <p className="card-text">{book.volumeInfo.description}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+
+
+                )
+
+            })}
+
+
         </div>
+
     );
 }
 
