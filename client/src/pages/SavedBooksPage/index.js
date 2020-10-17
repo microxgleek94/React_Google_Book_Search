@@ -27,14 +27,14 @@ function SavedBooksPage(book) {
     console.log("this is booksave", bookSave)
 
     return (
-        <div className="container">
+        <div className="container" >
             <section className="row border border-secondary p-3">
                 <div className="col">
                     <div className="card">
                         <div className="card-header">
                             Saved
                         </div>
-                        <div className="card-body">
+                        <div  className="card-body">
                             {bookSave.length !== 0 ? (<ul>{bookSave.map(book => (
                                 <SavedBook
                                     book={book}

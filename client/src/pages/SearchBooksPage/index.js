@@ -22,7 +22,7 @@ function SearchBooksPage({ book }) {
         })
     }
     const makeBook = (book) => {
-        console.log("This is the user's search input:" + JSON.parse(JSON.stringify(book)))
+        console.log(book)
         API.saveBook({
             author: book.volumeInfo.author,
             description: book.volumeInfo.description,

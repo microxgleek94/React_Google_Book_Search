@@ -14,12 +14,9 @@ function App() {
       <NavBar />
       <Header />
       <Switch>
-        <Route exact path={"/"}>
-          <SearchBooksPage />
-        </Route>
-        <Route exact path={"/saved"}>
-          <SavedBooksPage />
-        </Route>
+        <Route exact path={["/", "/search"]} component={SearchBooksPage} />
+        <Route exact path={"/saved"} component={SavedBooksPage} />
+        <SavedBooksPage />
       </Switch>
     </Router>
   );
