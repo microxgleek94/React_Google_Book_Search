@@ -3,13 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const BookSchema = new Schema({
-  _id: {
-    type: String,
-    trim: true,
-    unique: true,
-    required:  true,
-  },
-
   link: {
     type: String,
     trim: true,
